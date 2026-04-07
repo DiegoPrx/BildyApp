@@ -1,0 +1,99 @@
+@base = http://localhost:3000/api
+@token = TU_ACCESS_TOKEN_AQUI
+
+### Registro
+POST {{base}}/user/register
+Content-Type: application/json
+
+{
+  "email": "usuario@ejemplo.com",
+  "password": "Password123"
+}
+
+### Verificar email
+PUT {{base}}/user/validation
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "code": "123456"
+}
+
+### Login
+POST {{base}}/user/login
+Content-Type: application/json
+
+{
+  "email": "usuario@ejemplo.com",
+  "password": "Password123"
+}
+
+### Datos personales
+PUT {{base}}/user/register
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Diego",
+  "lastName": "Perez",
+  "nif": "12345678A"
+}
+
+### Crear empresa
+PATCH {{base}}/user/company
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "isFreelance": false,
+  "name": "Mi Empresa SL",
+  "cif": "B12345678",
+  "address": {
+    "street": "Calle Mayor",
+    "number": "1",
+    "postal": "28001",
+    "city": "Madrid",
+    "province": "Madrid"
+  }
+}
+
+### Obtener usuario
+GET {{base}}/user
+Authorization: Bearer {{token}}
+
+### Refresh token
+POST {{base}}/user/refresh
+Content-Type: application/json
+
+{
+  "refreshToken": "TU_REFRESH_TOKEN_AQUI"
+}
+
+### Logout
+POST {{base}}/user/logout
+Authorization: Bearer {{token}}
+
+### Eliminar usuario (soft)
+DELETE {{base}}/user?soft=true
+Authorization: Bearer {{token}}
+
+### Cambiar contraseña
+PUT {{base}}/user/password
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "currentPassword": "Password123",
+  "newPassword": "NuevaPassword456"
+}
+
+### Invitar usuario
+POST {{base}}/user/invite
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "email": "invitado@ejemplo.com",
+  "name": "Juan",
+  "lastName": "Garcia"
+}
