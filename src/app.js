@@ -10,7 +10,12 @@ const app = express();
 
 // Seguridad: helmet, sanitización, rate limiting
 app.use(helmet());
-app.use(mongoSanitize());
+app.use((req, res, next) => {
+  mongoSanitize.sanitize(req.body);
+  mongoSanitize.sanitize(req.query);
+  mongoSanitize.sanitize(req.params);
+  next();
+});
 app.use(rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
