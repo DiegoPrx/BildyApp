@@ -207,7 +207,7 @@ export const refreshToken = async (req, res, next) => {
     if (tokenBlacklist.has(token)) throw AppError.unauthorized('Refresh token inválido');
 
     const decoded = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
-    const user = await User.findById(decoded.id);
+    const user = await User.findById(decoded.id).select('+refreshToken');
     if (!user || user.refreshToken !== token) throw AppError.unauthorized('Refresh token inválido');
 
     const newAccessToken = generateAccessToken({ id: user._id, role: user.role });
@@ -227,7 +227,7 @@ export const refreshToken = async (req, res, next) => {
 // POST /api/user/logout
 export const logout = async (req, res, next) => {
   try {
-    const user = await User.findById(req.user.id);
+    const user = await User.findById(req.user.id).select('+refreshToken');
     if (user && user.refreshToken) {
       tokenBlacklist.add(user.refreshToken);
       user.refreshToken = null;
